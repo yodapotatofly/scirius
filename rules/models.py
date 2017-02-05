@@ -217,6 +217,9 @@ class Source(models.Model):
         # Ignore error if not present
         except OSError:
             pass
+        # workaround to avoid to big delete queries
+        for category in Category.objects.filter(source = self):
+            category.delete()
         # delete model
         models.Model.delete(self)
 
